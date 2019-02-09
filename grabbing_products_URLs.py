@@ -13,8 +13,6 @@ print(my_url)
 req = Request(my_url, None, {'User-agent' : 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.2526.73 Safari/537.36'},{'Accept-Language' : 'en-US,en;q=0.8'})
 uClient = uReq(req)
 page_html = uClient.read()
-
-
 uClient.close() 
 page_soup=soup(page_html,"html.parser")
 containers=page_soup.find_all("div",{"class":"a-fixed-left-grid-col a-col-right"})
