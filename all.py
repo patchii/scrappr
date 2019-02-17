@@ -10,7 +10,8 @@ my_url = my_url[:-1]
 my_url= my_url + "&sort=relevanceblender"
 print(my_url)
 filename="review.csv"
-f= open(filename,"a+")
+
+f= open(filename,"w")
 headers="title\trating\treview\n"
 f.write(headers)
 
@@ -21,6 +22,8 @@ uClient.close()
 page_soup=soup(page_html,"html.parser")
 containers=page_soup.find_all("div",{"class":"a-fixed-left-grid-col a-col-right"})
 j=1
+page=""
+string=""
 for container in containers:
 
     print("link number "+ str(j)+"\n")
@@ -66,11 +69,8 @@ for container in containers:
                     review_container=container.findAll("span",{"class":"a-size-base review-text"})
                     review=review_container[0].text
                     
-                    
-                    try:
-                        f.write(review_title + "\t" + rating + "\t" + review + "\n")
-                    except:
-                        print("te7cheee\n")
-                    finally:
-                        sleep(0.2)
+                    string=review_title.replace(",","|") + "\t" + rating + "\t" + review.replace(",","|") + "\n"
+                    if string not in page:
+                        page=page+string
+f.write(page)
 f.close()
