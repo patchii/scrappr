@@ -3,6 +3,9 @@ from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 from random import shuffle
 
+current_session=None
+current_ua=None
+current_proxies=None
 
 def get_proxies(link):  
     response = requests.get(link)
@@ -29,15 +32,27 @@ def get_proxy(session, proxies, validated=False):
                 session.proxies = {'https': 'https://{}'.format(next(proxies))}
 
 
-def get_response(url):
-    session = requests.Session()
-    ua = UserAgent()
-    proxies = get_random_proxies_iter()
+def get_response(url,n):
+    global current_session
+    global current_ua
+    global current_proxies
+    
+    if n%10==0 :
+        session = requests.Session()
+        current_session=session
+        
+        ua = UserAgent()
+        current_ua=ua
+        
+        proxies = get_random_proxies_iter()
+        current_proxies=proxies
+
+    
     while True:
         try:
-            session.headers = {'User-Agent': ua.random}
-            print(get_proxy(session, proxies, validated=True))  #collect a working proxy to be used to fetch a valid response
-            return session.get(url) # as soon as it fetches a valid response, it will break out of the while loop
+            current_session.headers = {'User-Agent': current_ua.random}
+            print(get_proxy(current_session, current_proxies, validated=True))  #collect a working proxy to be used to fetch a valid response
+            return current_session.get(url) # as soon as it fetches a valid response, it will break out of the while loop
         except StopIteration:
             raise  # No more proxies left to try
         except Exception:
@@ -45,7 +60,7 @@ def get_response(url):
 
 
 def parse_content(url):
-    response = get_response(url)
+    response = get_response(url,n)
     page_html=response.text
     return BeautifulSoup(page_html,"html.parser")
 
@@ -53,6 +68,7 @@ def parse_content(url):
 
 
 if __name__ == '__main__':
+    n=0
     url = 'https://www.amazon.co.uk/Apple-iPhone-64-SIM-Free-Smartphone-Silver/dp/B076GV5GXF/ref=sr_1_3/258-1363206-6339406?ie=UTF8&qid=1550080986&sr=8-3&keywords=iphone+x'
     page_soup=parse_content(url)
     containers=page_soup.find_all("a",{"data-hook":"see-all-reviews-link-foot"})
@@ -69,6 +85,7 @@ if __name__ == '__main__':
         print(number_of_reviews)
         number_of_review_pages=(number_of_reviews//10)+1
         for i in range(1,number_of_review_pages+1):
+            n=n+1
             print("page Number "+str(i) +"\n")
             r=review_url+"&pageNumber="+str(i)
             r_page_soup=parse_content(r)

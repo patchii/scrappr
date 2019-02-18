@@ -2,8 +2,8 @@ from urllib.request import Request,urlopen as uReq
 from bs4 import BeautifulSoup as soup
 from time import sleep
 
-mots_cles=["iphone","x"]
-my_url="https://www.amazon.co.uk/s?url=search-alias%3Daps&field-keywords="
+mots_cles=["iphone+x"]
+my_url="https://www.amazon.fr/s?url=search-alias%3Daps&field-keywords="
 for mot in mots_cles:
     my_url=my_url+mot+"+"
 my_url = my_url[:-1]
@@ -42,35 +42,44 @@ for container in containers:
         page_soup=soup(page_html,"html.parser")
         containers=page_soup.find_all("a",{"data-hook":"see-all-reviews-link-foot"})
         if len(containers) != 0 :
-            review_url="https://www.amazon.co.uk"+containers[0]["href"]
+            review_url="https://www.amazon.fr"+containers[0]["href"]
             number_of_reviews_container= containers[0].text
             number_of_reviews=[int(s) for s in number_of_reviews_container.split() if s.isdigit()][0]
             number_of_review_pages=(number_of_reviews//10)+1
 
         #f.close()
-            for i in range(1,min(5,number_of_review_pages+1)):
+            for i in range(1,5):
                 print("page Number "+str(i) +"\n")
                 r=review_url+"&pageNumber="+str(i)
-                r_uClient = uReq(r)
-                r_page_html= r_uClient.read()
-                r_uClient.close()
-                r_page_soup=soup(r_page_html,"html.parser")
-                containers = page_soup.findAll("div",{"class": "a-section celwidget"})
-            
-            
-                for container in containers:    
+                try:
+                    r_uClient = uReq(r)
+                    r_page_html= r_uClient.read()
+                    r_uClient.close()
+                    r_page_soup=soup(r_page_html,"html.parser")
+                    containers = r_page_soup.findAll("div",{"class": "a-section celwidget"})
                 
-                    title_container=container.findAll("a",{"class":"a-size-base a-link-normal review-title a-color-base a-text-bold"})
-                    review_title=title_container[0].text
+                
+                    for container in containers:    
                     
-                    rating_container=container.findAll("a",{"class":"a-link-normal"})
-                    rating=rating_container[0]["title"]
-                    
-                    review_container=container.findAll("span",{"class":"a-size-base review-text"})
-                    review=review_container[0].text
-                    
-                    string=review_title.replace(",","|") + "\t" + rating + "\t" + review.replace(",","|") + "\n"
-                    if string not in page:
-                        page=page+string
+                        title_container=container.findAll("a",{"class":"a-size-base a-link-normal review-title a-color-base a-text-bold"})
+                        review_title=title_container[0].text
+                        
+                        rating_container=container.findAll("a",{"class":"a-link-normal"})
+                        rating=rating_container[0]["title"]
+                        
+                        review_container=container.findAll("span",{"class":"a-size-base review-text"})
+                        if len(review_container)!=0:
+                            review=review_container[0].text
+                        
+                            try:
+                                string=review_title + "\t" + rating + "\t" + review + "\n"
+                                
+                                if string not in page:
+                                    page=page+string
+                            except:
+                                print("something went wrong\n")
+                except:
+                    print("encode error")
+print(page)
 f.write(page)
 f.close()
