@@ -1,6 +1,6 @@
 from urllib.request import urlopen as uReq
 from bs4 import BeautifulSoup as soup
-my_url = 'https://www.amazon.co.uk/Apple-iPhone-64-GB-Silver/product-reviews/B076GV5GXF/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews'
+my_url = 'https://www.amazon.fr/Apple-iPhone-64-GO-Sid%C3%A9ral/product-reviews/B075LXNK24/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews'
 #opent connex an grab  
 uClient = uReq(my_url)
 page_html= uClient.read()
