@@ -41,7 +41,7 @@ for container in containers:
     #results[''] = review
     results.append(ss)
 
-pprint(results)
+#pprint(results)
 df = pd.DataFrame.from_records(results)
 df['label'] = 0
 df.loc[df['compound'] > 0.2, 'label'] = 1
@@ -58,5 +58,4 @@ sns.barplot(x=counts.index, y=counts, ax=ax)
 
 ax.set_xticklabels(['Negative', 'Neutral', 'Positive'])
 ax.set_ylabel("Percentage")
-
 plt.show()

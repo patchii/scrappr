@@ -21,13 +21,13 @@ page_soup=soup(page_html,"lxml")
 
 containers=page_soup.find_all("a",{"data-hook":"see-all-reviews-link-foot"})
 
-print(containers)
 
-
+sleep(0.4)
 filename="review.csv"
 f= open(filename,"w")
 headers="title\trating\treview\n"
 f.write(headers)
+
 
 if len(containers) != 0 :
     review_url="https://www.amazon.fr"+containers[0]["href"]
