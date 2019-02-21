@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup as soup
 from time import sleep
 
 
-my_url="https://www.amazon.co.uk/Apple-iPhone-Silver-Certified-Refurbished/dp/B0798G4Z19/ref=sr_1_9/261-1246156-8049016?ie=UTF8&qid=1549673314&sr=8-9&keywords=iphone+x"
+my_url="https://www.amazon.co.uk/Apple-iPhone-64-SIM-Free-Smartphone-Silver/dp/B076GV5GXF/ref=sr_1_3/259-1462801-2491548?ie=UTF8&qid=1550053368&sr=8-3&keywords=iphone%20x&fbclid=IwAR3Q-4eXNsoZcDr4oV4AnewtPo-4MSE4f9RFjzD1Dr703s9Ko87DRO_3epk"
 
 req = Request(my_url, None, {'User-agent' : 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.2526.73 Safari/537.36'},{'Accept-Language' : 'en-US,en;q=0.8'})
 uClient = uReq(req)
@@ -11,6 +11,10 @@ page_html = uClient.read()
 uClient.close() 
 page_soup=soup(page_html,"html.parser")
 containers=page_soup.find_all("a",{"data-hook":"see-all-reviews-link-foot"})
+filename="review.csv"
+f= open(filename,"a+")
+headers="title\trating\treview\n"
+f.write(headers)
 
 if len(containers) != 0 :
     review_url="https://www.amazon.co.uk"+containers[0]["href"]
@@ -18,10 +22,7 @@ if len(containers) != 0 :
     number_of_reviews=[int(s) for s in number_of_reviews_container.split() if s.isdigit()][0]
     print(number_of_reviews)
     number_of_review_pages=(number_of_reviews//10)+1
-    filename="review.csv"
-    f= open(filename,"a+")
-    headers="title\trating\treview\n"
-    f.write(headers)
+
 #f.close()
     for i in range(1,number_of_review_pages+1):
         print("page Number "+str(i) +"\n")
