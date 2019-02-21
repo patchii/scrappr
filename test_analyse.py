@@ -58,5 +58,4 @@ sns.barplot(x=counts.index, y=counts, ax=ax)
 
 ax.set_xticklabels(['Negative', 'Neutral', 'Positive'])
 ax.set_ylabel("Percentage")
-
 plt.show()

@@ -3,18 +3,22 @@ from bs4 import BeautifulSoup as soup
 from time import sleep
 
 
-my_url="https://www.amazon.co.uk/Apple-iPhone-64-SIM-Free-Smartphone-Silver/dp/B076GV5GXF/ref=sr_1_3/259-1462801-2491548?ie=UTF8&qid=1550053368&sr=8-3&keywords=iphone%20x&fbclid=IwAR3Q-4eXNsoZcDr4oV4AnewtPo-4MSE4f9RFjzD1Dr703s9Ko87DRO_3epk"
+my_url="https://www.amazon.co.uk/Apple-iPhone-64-SIM-Free-Smartphone-Silver/dp/B076GV5GXF/ref=sr_1_3/258-1363206-6339406?ie=UTF8&qid=1550080986&sr=8-3&keywords=iphone+x"
 
-req = Request(my_url, None, {'User-agent' : 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.2526.73 Safari/537.36'},{'Accept-Language' : 'en-US,en;q=0.8'})
+req = Request(my_url, None, {'User-agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'},{'Accept-Language' : 'en-US,en;q=0.8'})
 uClient = uReq(req)
 page_html = uClient.read()
 uClient.close() 
 page_soup=soup(page_html,"html.parser")
 containers=page_soup.find_all("a",{"data-hook":"see-all-reviews-link-foot"})
+
+sleep(0.4)
 filename="review.csv"
 f= open(filename,"a+")
 headers="title\trating\treview\n"
 f.write(headers)
+
+print(len(containers))
 
 if len(containers) != 0 :
     review_url="https://www.amazon.co.uk"+containers[0]["href"]
@@ -31,7 +35,7 @@ if len(containers) != 0 :
         r_page_html= r_uClient.read()
         r_uClient.close()
         r_page_soup=soup(r_page_html,"html.parser")
-        containers = page_soup.findAll("div",{"class": "a-section celwidget"})
+        containers = r_page_soup.findAll("div",{"class": "a-section celwidget"})
     
     
         for container in containers:    
@@ -45,8 +49,10 @@ if len(containers) != 0 :
             review_container=container.findAll("span",{"class":"a-size-base review-text"})
             review=review_container[0].text
             
-            
-            
-            f.write(review_title.replace(",","|") + "\t" + rating + "\t" + review.replace(",","|") + "\n")
-            sleep(0.2)
+            try:
+                f.write(review_title.replace(",","|") + "\t" + rating + "\t" + review.replace(",","|") + "\n")
+            except:
+              print("Something went wrong")
+            finally:
+              sleep(0.4)
 f.close()
