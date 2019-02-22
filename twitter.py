@@ -2,6 +2,7 @@ from tweepy import Stream
 from tweepy import OAuthHandler
 from tweepy.streaming import StreamListener
 import json
+import time
 
 
 
@@ -34,4 +35,8 @@ auth = OAuthHandler(ckey, csecret)
 auth.set_access_token(atoken, asecret)
 
 twitterStream = Stream(auth, listener())
-twitterStream.filter(track=["car"])
+twitterStream.filter(languages=["en"],track=["ps4"])
+
+time.sleep(20) #halts the control for runtime seconds
+
+twitterStream.disconnect()
