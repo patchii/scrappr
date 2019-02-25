@@ -1,9 +1,9 @@
-import textblob 
+#import textblob 
 import tweepy
-import sys
+#import sys
 import pandas as pd
 import matplotlib.pyplot as plt
-from py_translator import Translator
+#from py_translator import Translator
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import seaborn as sns
 sns.set(style='darkgrid', context='talk', palette='Dark2')
