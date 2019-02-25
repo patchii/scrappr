@@ -33,7 +33,7 @@ for container in containers:
 	page_soup=soup(page_html,"lxml")
 	l_containers=page_soup.find_all("a",{"class":"see--all--reviews-link"})
 	#print(l_containers[0]["href"])
-	if len(l_containers[0]) != 0 :
+	if len(l_containers) != 0 :
 	            review_url=l_containers[0]["href"]
 	            #print(review_url)
 	            number_of_reviews_container= l_containers[0].text
@@ -44,7 +44,7 @@ for container in containers:
 	                number_of_reviews=number_of_reviews[0]
 	            number_of_review_pages=(number_of_reviews//10)+1
 	            #print(number_of_review_pages)
-	            for i in range(1,min(6,number_of_review_pages+1)):
+	            for i in range(1,min(3,number_of_review_pages+1)):
 	                r=review_url+"?pgn="+str(i)
 	                r =unidecode.unidecode(r)
 	                r_uClient = uReq(r)
