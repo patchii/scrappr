@@ -126,6 +126,13 @@ def post(post_id):
     post = Post.query.get_or_404(post_id)
     return render_template('post.html', title=post.title, post=post)
 
+@app.route("/post/<int:post_id>/reviews")
+def reviews(post_id):
+    page=request.args.get('page',1,type=int)
+    post = Post.query.get_or_404(post_id)
+    reviews=Review.query.filter_by(origin=post).paginate(page=page,per_page=5)
+    return render_template('reviews.html', title=post.title, post=post,reviews=reviews)
+
 
 @app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
 @login_required

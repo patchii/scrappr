@@ -17,6 +17,7 @@
       <p class="article-content">{{ post.keywords }}</p>
       <p class="article-content">{{ post.url }}</p>
     </div>
+
   </article>
   <!-- Modal -->
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -37,4 +38,12 @@
       </div>
     </div>
   </div>
+  <article class="media content-section">
+    <div>
+      <h2 class="article-title">
+      <a  href="{{ url_for('reviews', post_id=post.id) }}">View all Reviews</a>
+      </h2>
+      
+    </div>   
+  </article>
 {% endblock content %}
