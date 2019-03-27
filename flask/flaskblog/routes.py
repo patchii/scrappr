@@ -97,6 +97,7 @@ def account():
 @app.route("/post/new", methods=['GET', 'POST'])
 @login_required
 def new_post():
+    review_nb=1
     form = PostForm()
     if form.validate_on_submit():
         post = Post(title=form.title.data, keywords=form.keywords.data,url=form.url.data, author=current_user)
@@ -104,7 +105,8 @@ def new_post():
         if form.url.data == 'Ebay.com':
             reviews= ebay_parse(form.keywords.data,form.number_of_reviews.data)
             for item in reviews:
-                review= Review(title='review',content=item,origin=post)
+                review= Review(title='review '+str(review_nb),content=item,origin=post)
+                review_nb = review_nb+1
                 db.session.add(review)
             db.session.commit()
 
@@ -116,7 +118,7 @@ def new_post():
             db.session.commit()
 
         flash('Your Request has been created!', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('user_posts', username=post.author.username))
     return render_template('create_post.html', title='New Post',
                            form=form, legend='New Post')
 
