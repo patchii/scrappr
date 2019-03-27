@@ -8,6 +8,8 @@ from flaskblog.models import User, Post, Review
 from flask_login import login_user, current_user, logout_user, login_required
 from flaskblog.ebay import ebay_parse
 from flaskblog.twitter1 import twitter_parse
+from textblob import TextBlob
+import pygal
 
 @app.route("/")
 @app.route("/home")
@@ -104,7 +106,21 @@ def new_post():
         db.session.add(post)
         if form.url.data == 'Ebay.com':
             reviews= ebay_parse(form.keywords.data,form.number_of_reviews.data)
+            sommtot=0
+            sommneg=0
+            sommpos=0
+            sommneu=0
+            
             for item in reviews:
+                sommtot=sommtot+1
+                analysis = TextBlob(item)
+                if (analysis.sentiment.polarity == 0):
+                    sommneu=sommneu+1   
+                if (analysis.sentiment.polarity < 0.00):
+                    sommneg=sommneg+1   
+                if (analysis.sentiment.polarity > 0.00):
+                    sommpos=sommpos+1                
+
                 review= Review(title='review '+str(review_nb),content=item,origin=post)
                 review_nb = review_nb+1
                 db.session.add(review)
@@ -178,3 +194,21 @@ def user_posts(username):
         .order_by(Post.date_posted.desc())\
         .paginate(page=page, per_page=5)
     return render_template('user_posts.html', posts=posts, user=user)
+
+
+
+@app.route("/graph")
+def graph():
+    x=(sommpos/sommtot)*100
+    round(x,1)
+    y=(sommneg/sommtot)*100
+    round(y,1)
+    z=100-x-y
+    graph = pygal.Pie()
+    graph.title = ' How people are reacting on by analysing reviews in( %)'
+    graph.add('Positive',x)
+    graph.add('Negative',y)
+    graph.add('Neutral',z)
+    graph_data = graph.render_data_uri()
+
+    return render_template( 'graph.html', graph_data = graph_data)

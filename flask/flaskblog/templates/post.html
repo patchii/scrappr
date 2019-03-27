@@ -42,8 +42,14 @@
     <div>
       <h2 class="article-title">
       <a  href="{{ url_for('reviews', post_id=post.id) }}">View all Reviews</a>
-      </h2>
-      
-    </div>   
+      </h2>  
+    </div>  
+  </article>
+  <article class="media content-section">
+    <div>
+      <h2 class="article-title">
+      <a  href="{{ url_for('graph')}}">View Graph</a>
+      </h2>  
+    </div>  
   </article>
 {% endblock content %}
