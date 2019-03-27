@@ -2,14 +2,14 @@ from urllib.request import Request,urlopen as uReq
 from bs4 import BeautifulSoup as soup
 import unidecode
 
-def ebay_parse(keywords):
+def ebay_parse(keywords,nb):
     mots_cles=keywords.split()
     my_url = "https://www.ebay.co.uk/sch/"
     for mot in mots_cles:
         my_url=my_url+mot+"+"
     my_url = my_url[:-1]
     #print(my_url)
-
+    i=0
     page=''
     tab=[]
     string=''
@@ -56,6 +56,9 @@ def ebay_parse(keywords):
                                 if string not in page:
                                     page=page+string+"\n"
                                     tab.append(string)
+                                i=i+1
+                                if(i==int(nb)+1):
+                                    return tab
                                     
     return tab
 

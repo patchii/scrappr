@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import seaborn as sns
 
-def twitter_parse(keywords):
+def twitter_parse(keywords,nb):
 	tab=[]
 	page=''
 	string=''
@@ -20,7 +20,7 @@ def twitter_parse(keywords):
 	auth = tweepy.OAuthHandler(consumerKey, consumerSecret)
 	auth.set_access_token(accessToken, accessTokenSecret)
 	api = tweepy.API(auth)
-	noOfSearchTerms = 100
+	noOfSearchTerms = int(nb)
 	tweets = tweepy.Cursor(api.search, q=mots_cle).items(noOfSearchTerms)
 	for tweet in tweets:
 	   # tweet_review = tweet.text
