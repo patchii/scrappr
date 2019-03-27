@@ -97,26 +97,28 @@ def account():
 @app.route("/post/new", methods=['GET', 'POST'])
 @login_required
 def new_post():
+    review_nb=1
     form = PostForm()
     if form.validate_on_submit():
         post = Post(title=form.title.data, keywords=form.keywords.data,url=form.url.data, author=current_user)
         db.session.add(post)
         if form.url.data == 'Ebay.com':
-            reviews= ebay_parse(form.keywords.data)
+            reviews= ebay_parse(form.keywords.data,form.number_of_reviews.data)
             for item in reviews:
-                review= Review(title='review',content=item,origin=post)
+                review= Review(title='review '+str(review_nb),content=item,origin=post)
+                review_nb = review_nb+1
                 db.session.add(review)
             db.session.commit()
 
         if form.url.data == 'Twitter.com':
-            reviews= twitter_parse(form.keywords.data)
+            reviews= twitter_parse(form.keywords.data,form.number_of_reviews.data)
             for item in reviews:
                 review= Review(title='review',content=item,origin=post)
                 db.session.add(review)
             db.session.commit()
 
         flash('Your Request has been created!', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('user_posts', username=post.author.username))
     return render_template('create_post.html', title='New Post',
                            form=form, legend='New Post')
 
@@ -125,6 +127,13 @@ def new_post():
 def post(post_id):
     post = Post.query.get_or_404(post_id)
     return render_template('post.html', title=post.title, post=post)
+
+@app.route("/post/<int:post_id>/reviews")
+def reviews(post_id):
+    page=request.args.get('page',1,type=int)
+    post = Post.query.get_or_404(post_id)
+    reviews=Review.query.filter_by(origin=post).paginate(page=page,per_page=5)
+    return render_template('reviews.html', title=post.title, post=post,reviews=reviews)
 
 
 @app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
