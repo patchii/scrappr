@@ -1,5 +1,7 @@
 from urllib.request import Request,urlopen as uReq
 from bs4 import BeautifulSoup as soup
+from py_translator import Translator
+
 
 import unidecode
 
@@ -82,9 +84,12 @@ for container in containers:
                             if len(review_container)!=0:
                                 review=review_container[0].text                     
                                 try:
+
                                     string= unidecode.unidecode(review_title + "\t" + rating + "\t" + review + "\n")
+                                    translated_string = Translator().translate(text=string, dest='en').text
+                                    string= unidecode.unidecode(translated_string)
                                     if string not in page:
-                                        page=page+string
+                                        page=page+translated_string
                                 except:
                                     print("something went wrong\n")
                     except:
