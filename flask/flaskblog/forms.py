@@ -59,5 +59,5 @@ class UpdateAccountForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     keywords = TextAreaField('Keywords', validators=[DataRequired()])
-    url=SelectField('URL', choices=[('url1', 'Ebay.com'), ('url2', 'Amazon.fr'), ('url3', 'Twitter.com')])
+    url=SelectField('URL', choices=[('Ebay.com', 'Ebay.com'), ('Amazon.fr', 'Amazon.fr'), ('Twitter.com', 'Twitter.com')])
     submit = SubmitField('Post')

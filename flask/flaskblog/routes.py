@@ -7,6 +7,7 @@ from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, Post
 from flaskblog.models import User, Post, Review
 from flask_login import login_user, current_user, logout_user, login_required
 from flaskblog.ebay import ebay_parse
+from flaskblog.twitter1 import twitter_parse
 
 @app.route("/")
 @app.route("/home")
@@ -100,13 +101,19 @@ def new_post():
     if form.validate_on_submit():
         post = Post(title=form.title.data, keywords=form.keywords.data,url=form.url.data, author=current_user)
         db.session.add(post)
-        reviews= ebay_parse(form.keywords.data)
-        for item in reviews:
-            review= Review(title='review',content=item,origin=post)
-            db.session.add(review)
-        db.session.commit()
+        if form.url.data == 'Ebay.com':
+            reviews= ebay_parse(form.keywords.data)
+            for item in reviews:
+                review= Review(title='review',content=item,origin=post)
+                db.session.add(review)
+            db.session.commit()
 
-        review= ebay_parse(form.keywords.data)
+        if form.url.data == 'Twitter.com':
+            reviews= twitter_parse(form.keywords.data)
+            for item in reviews:
+                review= Review(title='review',content=item,origin=post)
+                db.session.add(review)
+            db.session.commit()
 
         flash('Your Request has been created!', 'success')
         return redirect(url_for('home'))
