@@ -6,17 +6,12 @@ from py_translator import Translator
 import unidecode
 
 mots_cles=["iphone+x"]
-my_url="https://www.amazon.fr/s?url=search-alias%3Daps&field-keywords="
+my_url="https://www.amazon.fr/s/ref=nb_sb_noss_2?__mk_fr_FR=ÅMÅŽÕÑ&url=search-alias%3Daps&field-keywords="
 for mot in mots_cles:
     my_url=my_url+mot+"+"
 my_url = my_url[:-1]
-my_url= my_url + "&sort=relevanceblender"
 print(my_url)
 
-filename="review.csv"
-f= open(filename,"w")
-headers="title\trating\treview\n"
-f.write(headers)
 
 my_url=unidecode.unidecode(my_url)
 req = Request(my_url, None, {'User-agent' : 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.2526.73 Safari/537.36'},{'Accept-Language' : 'en-US,en;q=0.8'})
@@ -26,22 +21,32 @@ uClient.close()
 page_soup=soup(page_html,"lxml")
 containers=page_soup.find_all("div",{"class":"s-item-container"})
 print(len(containers))
+while len(containers)==0:
+    my_url=unidecode.unidecode(my_url)
+    req = Request(my_url, None, {'User-agent' : 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.2526.73 Safari/537.36'},{'Accept-Language' : 'en-US,en;q=0.8'})
+    uClient = uReq(req)
+    page_html = uClient.read()
+    uClient.close() 
+    page_soup=soup(page_html,"lxml")
+    containers=page_soup.find_all("div",{"class":"s-item-container"})
+    print(len(containers))
+    
 j=1
 page=""
 string=""
 for container in containers:
 
 
-    url_container=container.findAll("a",{"class":"a-link-normal s-access-detail-page s-color-twister-title-link a-text-normal"})
+    url_container=container.findAll("a",{"class":"a-size-small a-link-normal a-text-normal"})
     if (len(url_container)!=0):
         url=url_container[0]["href"]
         url =unidecode.unidecode(url)
         
         if "picassoRedirect.html" not in url: 
-            print("link number "+ str(j)+"\n")
+           # print("link number "+ str(j)+"\n")
             j=j+1   
-            print(url)
-            print('\n')
+            #print(url)
+           # print('\n')
             req1 = Request(url, None, {'User-agent' : 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.2526.73 Safari/537.36'},{'Accept-Language' : 'en-US,en;q=0.8'})
             uClient1 = uReq(req1)
             page_html = uClient1.read()
@@ -59,8 +64,8 @@ for container in containers:
                 number_of_review_pages=(number_of_reviews//10)+1
 
             #f.close()
-                for i in range(1,min(6,number_of_review_pages+1)):
-                    print("page Number "+str(i) +"\n")
+                for i in range(1,min(3,number_of_review_pages+1)):
+                    #print("page Number "+str(i) +"\n")
                     r=review_url+"&pageNumber="+str(i)
                     r =unidecode.unidecode(r)
 
@@ -74,13 +79,13 @@ for container in containers:
                     
                         for container in containers:    
                         
-                            title_container=container.findAll("a",{"class":"a-size-base a-link-normal review-title a-color-base a-text-bold"})
+                            title_container=container.findAll("a",{"class":"a-size-base review-title a-text-bold"})
                             review_title=title_container[0].text
                             
-                            rating_container=container.findAll("a",{"class":"a-link-normal"})
+                            rating_container=container.findAll("a",{"class":"a-icon-alt"})
                             rating=rating_container[0]["title"]
                             
-                            review_container=container.findAll("span",{"class":"a-size-base review-text"})
+                            review_container=container.findAll("span",{"class":"a-size-base"})
                             if len(review_container)!=0:
                                 review=review_container[0].text                     
                                 try:
@@ -90,10 +95,9 @@ for container in containers:
                                     string= unidecode.unidecode(translated_string)
                                     if string not in page:
                                         page=page+translated_string
+                                        print(page)
                                 except:
                                     print("something went wrong\n")
                     except:
-                        print("encode error")
+                        pass
 print(page)
-f.write(page)
-f.close()

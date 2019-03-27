@@ -105,7 +105,7 @@ def new_post():
         if form.url.data == 'Ebay.com':
             reviews= ebay_parse(form.keywords.data,form.number_of_reviews.data)
             for item in reviews:
-                review= Review(title='review '+str(review_nb),content=item,origin=post)
+                review= Review(title='Review '+str(review_nb),content=item,origin=post)
                 review_nb = review_nb+1
                 db.session.add(review)
             db.session.commit()
@@ -113,7 +113,7 @@ def new_post():
         if form.url.data == 'Twitter.com':
             reviews= twitter_parse(form.keywords.data,form.number_of_reviews.data)
             for item in reviews:
-                review= Review(title='review',content=item,origin=post)
+                review= Review(title='review'str(review_nb),content=item,origin=post)
                 db.session.add(review)
             db.session.commit()
 
