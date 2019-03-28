@@ -4,7 +4,7 @@ from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskblog import app, db, bcrypt
 from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
-from flaskblog.models import User, Post, Review
+from flaskblog.models import User, Post, Review,Graph
 from flask_login import login_user, current_user, logout_user, login_required
 from flaskblog.ebay import ebay_parse
 from flaskblog.twitter1 import twitter_parse
@@ -124,6 +124,8 @@ def new_post():
                 review= Review(title='review '+str(review_nb),content=item,origin=post)
                 review_nb = review_nb+1
                 db.session.add(review)
+            graph=Graph(neg=sommneg,neu=sommneu,pos=sommpos,total=sommtot,gg=post)
+            db.session.add(graph)
             db.session.commit()
 
         if form.url.data == 'Twitter.com':
@@ -197,18 +199,22 @@ def user_posts(username):
 
 
 
-@app.route("/graph")
-def graph():
+@app.route("/post/<int:post_id>/graph")
+def graph(post_id):
+    post = Post.query.get_or_404(post_id)
+    graph=Graph.query.filter_by(gg=post).first()
+    sommpos=graph.pos
+    sommneu=graph.neu
+    sommneg=graph.neg
+    sommtot=graph.total
     x=(sommpos/sommtot)*100
-    round(x,1)
     y=(sommneg/sommtot)*100
-    round(y,1)
     z=100-x-y
     graph = pygal.Pie()
-    graph.title = ' How people are reacting on by analysing reviews in( %)'
-    graph.add('Positive',x)
-    graph.add('Negative',y)
-    graph.add('Neutral',z)
+    graph.title = ' How people are reacting on by analysing '+  str(sommtot) +' reviews in( %)'
+    graph.add('Positive',round(x,2))
+    graph.add('Negative',round(y,2))
+    graph.add('Neutral',round(z,2))
     graph_data = graph.render_data_uri()
 
     return render_template( 'graph.html', graph_data = graph_data)

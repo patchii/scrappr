@@ -28,6 +28,8 @@ class Post(db.Model):
     url=db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     reviews = db.relationship('Review', backref='origin', lazy=True)
+    graphs= db.relationship('Graph', backref='gg', lazy=True)
+
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
@@ -40,3 +42,13 @@ class Review(db.Model):
 
     def __repr__(self):
         return f"Review('{self.title}')"
+
+
+
+class Graph(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    neg=db.Column(db.Integer, nullable=False)
+    neu=db.Column(db.Integer, nullable=False)
+    pos=db.Column(db.Integer, nullable=False)
+    total =db.Column(db.Integer, nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
