@@ -10,6 +10,7 @@ from flaskblog.ebay import ebay_parse
 from flaskblog.twitter1 import twitter_parse
 from textblob import TextBlob
 import pygal
+from pygal.style import DarkColorizedStyle
 
 @app.route("/")
 @app.route("/home")
@@ -210,7 +211,10 @@ def graph(post_id):
     x=(sommpos/sommtot)*100
     y=(sommneg/sommtot)*100
     z=100-x-y
-    graph = pygal.Pie()
+    graph = pygal.Pie(fill=True, interpolate='cubic', print_values=True, style=DarkColorizedStyle(
+                  value_font_family='googlefont:Raleway',
+                  value_font_size=30,
+                  value_colors=('white')))
     graph.title = ' How people are reacting on by analysing '+  str(sommtot) +' reviews in( %)'
     graph.add('Positive',round(x,2))
     graph.add('Negative',round(y,2))
