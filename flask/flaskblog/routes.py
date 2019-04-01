@@ -4,10 +4,13 @@ from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskblog import app, db, bcrypt
 from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
-from flaskblog.models import User, Post, Review
+from flaskblog.models import User, Post, Review,Graph
 from flask_login import login_user, current_user, logout_user, login_required
 from flaskblog.ebay import ebay_parse
 from flaskblog.twitter1 import twitter_parse
+from textblob import TextBlob
+import pygal
+from pygal.style import DarkColorizedStyle
 
 @app.route("/")
 @app.route("/home")
@@ -104,10 +107,28 @@ def new_post():
         db.session.add(post)
         if form.url.data == 'Ebay.com':
             reviews= ebay_parse(form.keywords.data,form.number_of_reviews.data)
+            sommtot=0
+            sommneg=0
+            sommpos=0
+            sommneu=0
+            
             for item in reviews:
-                review= Review(title='Review '+str(review_nb),content=item,origin=post)
+
+                sommtot=sommtot+1
+                analysis = TextBlob(item)
+                if (analysis.sentiment.polarity == 0):
+                    sommneu=sommneu+1   
+                if (analysis.sentiment.polarity < 0.00):
+                    sommneg=sommneg+1   
+                if (analysis.sentiment.polarity > 0.00):
+                    sommpos=sommpos+1                
+
+                review= Review(title='review '+str(review_nb),content=item,origin=post)
+
                 review_nb = review_nb+1
                 db.session.add(review)
+            graph=Graph(neg=sommneg,neu=sommneu,pos=sommpos,total=sommtot,gg=post)
+            db.session.add(graph)
             db.session.commit()
 
         if form.url.data == 'Twitter.com':
@@ -178,3 +199,28 @@ def user_posts(username):
         .order_by(Post.date_posted.desc())\
         .paginate(page=page, per_page=5)
     return render_template('user_posts.html', posts=posts, user=user)
+
+
+
+@app.route("/post/<int:post_id>/graph")
+def graph(post_id):
+    post = Post.query.get_or_404(post_id)
+    graph=Graph.query.filter_by(gg=post).first()
+    sommpos=graph.pos
+    sommneu=graph.neu
+    sommneg=graph.neg
+    sommtot=graph.total
+    x=(sommpos/sommtot)*100
+    y=(sommneg/sommtot)*100
+    z=100-x-y
+    graph = pygal.Pie(fill=True, interpolate='cubic', print_values=True, style=DarkColorizedStyle(
+                  value_font_family='googlefont:Raleway',
+                  value_font_size=30,
+                  value_colors=('white')))
+    graph.title = ' How people are reacting on by analysing '+  str(sommtot) +' reviews in( %)'
+    graph.add('Positive',round(x,2))
+    graph.add('Negative',round(y,2))
+    graph.add('Neutral',round(z,2))
+    graph_data = graph.render_data_uri()
+
+    return render_template( 'graph.html', graph_data = graph_data)

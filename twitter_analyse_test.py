@@ -34,6 +34,7 @@ for tweet in tweets:
    # tweet_review = tweet.text
 	#translated_tweet = Translator().translate(text=tweet_review, dest='en').text
 	ss = sid.polarity_scores(tweet.text)
+	print(ss)
 	results.append(ss)
 
 
@@ -53,6 +54,9 @@ fig, ax = plt.subplots(figsize=(8, 4))
 counts = df.label.value_counts(normalize=True) * 100
 
 sns.barplot(x=counts.index, y=counts, ax=ax)
+print(counts.index)
+
+
 
 ax.set_xticklabels(['Negative', 'Neutral', 'Positive'])
 ax.set_ylabel("Percentage")
