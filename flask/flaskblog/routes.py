@@ -11,6 +11,8 @@ from flaskblog.twitter1 import twitter_parse
 from textblob import TextBlob
 import pygal
 from pygal.style import DarkColorizedStyle
+from flaskblog.analyse import analyse
+from flaskblog.graph import generate_graph
 
 @app.route("/")
 @app.route("/home")
@@ -100,41 +102,19 @@ def account():
 @app.route("/post/new", methods=['GET', 'POST'])
 @login_required
 def new_post():
-    review_nb=1
+    
     form = PostForm()
     if form.validate_on_submit():
         post = Post(title=form.title.data, keywords=form.keywords.data,url=form.url.data, author=current_user)
         db.session.add(post)
         if form.url.data == 'Ebay.com':
             reviews= ebay_parse(form.keywords.data,form.number_of_reviews.data)
-            sommtot=0
-            sommneg=0
-            sommpos=0
-            sommneu=0
+            analyse(reviews,post)
             
-            for item in reviews:
-                sommtot=sommtot+1
-                analysis = TextBlob(item)
-                if (analysis.sentiment.polarity == 0):
-                    sommneu=sommneu+1   
-                if (analysis.sentiment.polarity < 0.00):
-                    sommneg=sommneg+1   
-                if (analysis.sentiment.polarity > 0.00):
-                    sommpos=sommpos+1                
-
-                review= Review(title='review '+str(review_nb),content=item,origin=post)
-                review_nb = review_nb+1
-                db.session.add(review)
-            graph=Graph(neg=sommneg,neu=sommneu,pos=sommpos,total=sommtot,gg=post)
-            db.session.add(graph)
-            db.session.commit()
 
         if form.url.data == 'Twitter.com':
             reviews= twitter_parse(form.keywords.data,form.number_of_reviews.data)
-            for item in reviews:
-                review= Review(title='review',content=item,origin=post)
-                db.session.add(review)
-            db.session.commit()
+            analyse(reviews,post)
 
         flash('Your Request has been created!', 'success')
         return redirect(url_for('user_posts', username=post.author.username))
@@ -202,23 +182,6 @@ def user_posts(username):
 
 @app.route("/post/<int:post_id>/graph")
 def graph(post_id):
-    post = Post.query.get_or_404(post_id)
-    graph=Graph.query.filter_by(gg=post).first()
-    sommpos=graph.pos
-    sommneu=graph.neu
-    sommneg=graph.neg
-    sommtot=graph.total
-    x=(sommpos/sommtot)*100
-    y=(sommneg/sommtot)*100
-    z=100-x-y
-    graph = pygal.Pie(fill=True, interpolate='cubic', print_values=True, style=DarkColorizedStyle(
-                  value_font_family='googlefont:Raleway',
-                  value_font_size=30,
-                  value_colors=('white')))
-    graph.title = ' How people are reacting on by analysing '+  str(sommtot) +' reviews in( %)'
-    graph.add('Positive',round(x,2))
-    graph.add('Negative',round(y,2))
-    graph.add('Neutral',round(z,2))
-    graph_data = graph.render_data_uri()
+    graph_data = generate_graph(post_id)
 
     return render_template( 'graph.html', graph_data = graph_data)
