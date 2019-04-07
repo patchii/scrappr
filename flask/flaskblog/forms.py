@@ -62,3 +62,12 @@ class PostForm(FlaskForm):
     url=SelectField('URL', choices=[('Ebay.com', 'Ebay.com'), ('Amazon.fr', 'Amazon.fr'), ('Twitter.com', 'Twitter.com')])
     number_of_reviews=SelectField('Maximum Number Of Reviews', choices=[ ('10', '10'),('50', '50'), ('100', '100'), ('200', '200'), ('500', '500'), ('1000', '1000')])
     submit = SubmitField('Post')
+
+
+
+class LoginAdminForm(FlaskForm):
+    cin = StringField('id', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Login')
+
+

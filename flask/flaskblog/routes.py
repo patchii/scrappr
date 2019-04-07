@@ -3,7 +3,7 @@ import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskblog import app, db, bcrypt
-from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
+from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, LoginAdminForm
 from flaskblog.models import User, Post, Review,Graph
 from flask_login import login_user, current_user, logout_user, login_required
 from flaskblog.ebay import ebay_parse
@@ -13,6 +13,8 @@ import pygal
 from pygal.style import DarkColorizedStyle
 from flaskblog.analyse import analyse
 from flaskblog.graph import generate_graph
+from flask_admin.contrib.sqla import ModelView
+from flask_admin import Admin, AdminIndexView
 
 @app.route("/")
 @app.route("/home")
@@ -185,3 +187,31 @@ def graph(post_id):
     graph_data = generate_graph(post_id)
 
     return render_template( 'graph.html', graph_data = graph_data)
+
+
+@app.route("/login_admin", methods=['GET', 'POST'])
+def login_admin():
+    form = LoginAdminForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(id=form.cin.data).first()
+        if user:
+            login_user(user)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else  redirect(url_for('admin'))
+        else:
+            flash('Login Unsuccessful. Please check id and password', 'danger')
+    return render_template('login_admin.html', form=form)
+
+
+class MyModelView(ModelView):
+    def is_accessible(self):
+        return True
+     
+class MyAdminIndexView(AdminIndexView):
+    def is_accessible(self):
+        return current_user.is_authenticated
+
+admin = Admin(app, index_view=MyAdminIndexView)
+admin.add_view(MyModelView(User, db.session))
+admin.add_view(MyModelView(Post, db.session))
+
