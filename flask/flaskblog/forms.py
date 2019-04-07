@@ -62,3 +62,10 @@ class PostForm(FlaskForm):
     url=SelectField('URL', choices=[('Ebay.com', 'Ebay.com'), ('Amazon.fr', 'Amazon.fr'), ('Twitter.com', 'Twitter.com')])
     number_of_reviews=SelectField('Maximum Number Of Reviews', choices=[ ('10', '10'),('50', '50'), ('100', '100'), ('200', '200'), ('500', '500'), ('1000', '1000')])
     submit = SubmitField('Post')
+
+class ContactForm(FlaskForm):
+    name = TextAreaField('Your Name (required)', validators=[DataRequired()])
+    email = TextAreaField('Your mail (required)', validators=[DataRequired()])
+    subject = TextAreaField('Subject', validators=[DataRequired()])
+    message =TextAreaField('Your Message', validators=[DataRequired()])
+    submit = SubmitField('Post')

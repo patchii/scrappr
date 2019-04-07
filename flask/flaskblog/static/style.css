@@ -206,7 +206,7 @@ p {
 	text-transform: capitalize;
 	padding-top: 25px;
 	letter-spacing: 1px;
-	height: 80px;
+	
 	-webkit-transition: all 0.6s;
 	-moz-transition: all 0.6s;
 	-o-transition: all 0.6s;
@@ -317,7 +317,7 @@ p {
 
 	.navbar {
 		padding-top: 5px;
-		height: 60px;
+		height: 40px;
 	}
 
   .navbar-default {
