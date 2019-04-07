@@ -3,8 +3,13 @@ import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskblog import app, db, bcrypt
+
 from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, LoginAdminForm
 from flaskblog.models import User, Post, Review,Graph
+
+from flaskblog.forms import RegistrationForm, LoginForm,ContactForm, UpdateAccountForm, PostForm
+from flaskblog.models import User, Post, Review,Graph,Contact
+
 from flask_login import login_user, current_user, logout_user, login_required
 from flaskblog.ebay import ebay_parse
 from flaskblog.twitter1 import twitter_parse
@@ -114,6 +119,7 @@ def new_post():
             analyse(reviews,post)
             
 
+
         if form.url.data == 'Twitter.com':
             reviews= twitter_parse(form.keywords.data,form.number_of_reviews.data)
             analyse(reviews,post)
@@ -189,6 +195,7 @@ def graph(post_id):
     return render_template( 'graph.html', graph_data = graph_data)
 
 
+
 @app.route("/login_admin", methods=['GET', 'POST'])
 def login_admin():
     form = LoginAdminForm()
@@ -214,4 +221,17 @@ class MyAdminIndexView(AdminIndexView):
 admin = Admin(app, index_view=MyAdminIndexView)
 admin.add_view(MyModelView(User, db.session))
 admin.add_view(MyModelView(Post, db.session))
+
+
+@app.route("/contact", methods=['GET', 'POST'])
+def contact():
+    
+    form = ContactForm()
+    if form.validate_on_submit():
+        contact = Contact(name=form.name.data, email=form.email.data,subject=form.subject.data, message=form.message.data)
+        db.session.add(contact)
+        db.session.commit()
+        flash('Your message has been successfully sent!', 'success')
+        return redirect(url_for('contact'))
+    return render_template('contact.html',form=form)
 

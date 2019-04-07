@@ -42,7 +42,7 @@ def ebay_parse(keywords,nb):
                             number_of_reviews=number_of_reviews[0]
                         number_of_review_pages=(number_of_reviews//10)+1
                         #print(number_of_review_pages)
-                        for i in range(1,min(2,number_of_review_pages+1)):
+                        for i in range(1,number_of_review_pages+1):
                             r=review_url+"?pgn="+str(i)
                             r =unidecode.unidecode(r)
                             r_uClient = uReq(r)
