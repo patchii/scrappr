@@ -110,7 +110,7 @@ def new_post():
     
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, keywords=form.keywords.data,url=form.url.data, author=current_user)
+        post = Post(title=form.title.data, keywords=form.keywords.data,url=form.url.data, Client=current_user)
         db.session.add(post)
         if form.url.data == 'Ebay.com':
             reviews= ebay_parse(form.keywords.data,form.number_of_reviews.data)
@@ -123,7 +123,7 @@ def new_post():
             analyse(reviews,post)
 
         flash('Your Request has been created!', 'success')
-        return redirect(url_for('user_posts', username=post.author.username))
+        return redirect(url_for('user_posts', username=post.Client.username))
     return render_template('create_post.html', title='New Post',
                            form=form, legend='New Post')
 
@@ -145,7 +145,7 @@ def reviews(post_id):
 @login_required
 def update_post(post_id):
     post = Post.query.get_or_404(post_id)
-    if post.author != current_user:
+    if post.Client != current_user:
         abort(403)
     form = PostForm()
     if form.validate_on_submit():
@@ -167,7 +167,7 @@ def update_post(post_id):
 @login_required
 def delete_post(post_id):
     post = Post.query.get_or_404(post_id)
-    if post.author != current_user:
+    if post.Client != current_user:
         abort(403)
     db.session.delete(post)
     db.session.commit()
@@ -179,7 +179,7 @@ def delete_post(post_id):
 def user_posts(username):
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
-    posts = Post.query.filter_by(author=user)\
+    posts = Post.query.filter_by(Client=user)\
         .order_by(Post.date_posted.desc())\
         .paginate(page=page, per_page=5)
     return render_template('user_posts.html', posts=posts, user=user)
