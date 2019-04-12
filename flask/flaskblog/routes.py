@@ -4,11 +4,8 @@ from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskblog import app, db, bcrypt
 
-from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, LoginAdminForm
-from flaskblog.models import User, Post, Review,Graph
-
-from flaskblog.forms import RegistrationForm, LoginForm,ContactForm, UpdateAccountForm, PostForm
-from flaskblog.models import User, Post, Review,Graph,Contact
+from flaskblog.forms import RegistrationForm, LoginForm,ContactForm, UpdateAccountForm, PostForm, LoginAdminForm
+from flaskblog.models import User, Post, Review,Graph,Contact, Admin
 
 from flask_login import login_user, current_user, logout_user, login_required
 from flaskblog.ebay import ebay_parse
@@ -20,6 +17,7 @@ from flaskblog.analyse import analyse
 from flaskblog.graph import generate_graph
 from flask_admin.contrib.sqla import ModelView
 from flask_admin import Admin, AdminIndexView
+from flask_admin import BaseView, expose
 
 @app.route("/")
 @app.route("/home")
@@ -204,23 +202,43 @@ def login_admin():
         if user:
             login_user(user)
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else  redirect(url_for('admin'))
+            return redirect(next_page) if next_page else  redirect(url_for('index'))
         else:
             flash('Login Unsuccessful. Please check id and password', 'danger')
     return render_template('login_admin.html', form=form)
 
+class UserView(ModelView):
+    can_edit = False
+    can_view_details = True
+    column_exclude_list = ['password','image_file' ]
+    column_searchable_list = ['username','email']
 
-class MyModelView(ModelView):
-    def is_accessible(self):
-        return True
+
+
+
+class PostView(ModelView):
+    can_edit = False
+    can_create = False
+    can_view_details = True
+    column_exclude_list = ['date_posted','keywords','url']
+    column_searchable_list = ['title']
+    column_filters = ['Client']
      
-class MyAdminIndexView(AdminIndexView):
-    def is_accessible(self):
-        return current_user.is_authenticated
 
-admin = Admin(app, index_view=MyAdminIndexView)
-admin.add_view(MyModelView(User, db.session))
-admin.add_view(MyModelView(Post, db.session))
+
+class logoutView(BaseView):
+    @expose('/')
+    def logout1(self):
+        logout_user()
+        return self.render('home.html')
+
+
+admin = Admin(app, name='Administration', template_mode='bootstrap3')
+admin.add_view(UserView(User, db.session))
+admin.add_view(PostView(Post, db.session))
+admin.add_view(logoutView(name='Log Out'))
+
+
 
 
 @app.route("/contact", methods=['GET', 'POST'])
@@ -235,3 +253,6 @@ def contact():
         return redirect(url_for('contact'))
     return render_template('contact.html',form=form)
 
+@app.route('/admin')
+def index():
+    return '<a href="/admin/"</a>'
