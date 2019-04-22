@@ -2,7 +2,7 @@ from urllib.request import Request,urlopen as uReq
 from bs4 import BeautifulSoup as soup
 
 import unidecode
-mots_cles=["iphone","x"]
+mots_cles=["sone","xperia","z5"]
 my_url = "https://www.ebay.co.uk/sch/"
 for mot in mots_cles:
     my_url=my_url+mot+"+"
@@ -11,9 +11,9 @@ my_url = my_url[:-1]
 
 page=""
 string=""
-filename="review.csv"
-f= open(filename,"w")
-headers="title\trating\treview\n"
+filename="review.txt"
+f= open(filename,"w+")
+headers=""
 f.write(headers)
 my_url=unidecode.unidecode(my_url)
 req = Request(my_url, None, {'User-agent' : 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.2526.73 Safari/537.36'},{'Accept-Language' : 'en-US,en;q=0.8'})
@@ -45,7 +45,7 @@ for container in containers:
                 number_of_reviews=number_of_reviews[0]
                 number_of_review_pages=(number_of_reviews//10)+1
             #print(number_of_review_pages)
-            for i in range(1,min(3,number_of_review_pages+1)):
+            for i in range(1,number_of_review_pages):
                 r=review_url+"?pgn="+str(i)
                 r =unidecode.unidecode(r)
                 r_uClient = uReq(r)
@@ -64,7 +64,7 @@ for container in containers:
                     
                     review_container=commentaire.findAll("p",{"class": "review-item-content rvw-wrap-spaces"})
                     review=review_container[0].text  
-                    string= unidecode.unidecode(review_title + "\t" + rating + "\t" + review + "\n")
+                    string= unidecode.unidecode(review + "\n")
                     if string not in page:
                         page=page+string+"\n"
     except:

@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
   <article class="media content-section">
-    <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+    <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.Client.image_file) }}">
     <div class="media-body">
       <div class="article-metadata">
-        <a class="mr-2" href="{{ url_for('user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+        <a class="mr-2" href="{{ url_for('user_posts', username=post.Client.username) }}">{{ post.Client.username }}</a>
         <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
       </div>
       <h2 class="article-title">{{ post.title }}</h2>
@@ -12,7 +12,9 @@
       <p class="article-content">{{ post.url }}</p>
     </div>
 
+
   </article>
+  <a class="btn btn-info mb-4" href="{{ url_for('graph',post_id=post.id) }}">View Graph</a>
   <!-- Modal -->
   {% for review in reviews.items %}
   <article class="media content-section">

@@ -41,7 +41,7 @@ class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)    
-    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
 
     def __repr__(self):
         return f"Review('{self.title}')"
@@ -54,7 +54,7 @@ class Graph(db.Model):
     neu=db.Column(db.Integer, nullable=False)
     pos=db.Column(db.Integer, nullable=False)
     total =db.Column(db.Integer, nullable=False)
-    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
 
 
 

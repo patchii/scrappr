@@ -74,7 +74,7 @@ class LoginAdminForm(FlaskForm):
 
 class ContactForm(FlaskForm):
     name = TextAreaField('Your Name (required)', validators=[DataRequired()])
-    email = TextAreaField('Your mail (required)', validators=[DataRequired()])
+    email = TextAreaField('Your mail (required)', validators=[DataRequired(), Email()])
     subject = TextAreaField('Subject', validators=[DataRequired()])
     message =TextAreaField('Your Message', validators=[DataRequired()])
     submit = SubmitField('Post')

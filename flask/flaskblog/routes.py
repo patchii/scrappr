@@ -220,9 +220,19 @@ class PostView(ModelView):
     can_edit = False
     can_create = False
     can_view_details = True
+    can_delete = False
     column_exclude_list = ['date_posted','keywords','url']
     column_searchable_list = ['title']
     column_filters = ['Client']
+
+
+class ContactView(ModelView):
+    can_edit = False
+    can_view_details = True
+    can_create = False
+    can_delete = True
+    column_exclude_list = ['email','message' ]
+    column_searchable_list = ['subject','name']
      
 
 
@@ -236,6 +246,7 @@ class logoutView(BaseView):
 admin = Admin(app, name='Administration', template_mode='bootstrap3')
 admin.add_view(UserView(User, db.session))
 admin.add_view(PostView(Post, db.session))
+admin.add_view(ContactView(Contact, db.session))
 admin.add_view(logoutView(name='Log Out'))
 
 
