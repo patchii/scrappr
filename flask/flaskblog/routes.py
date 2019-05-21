@@ -3,13 +3,12 @@ import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskblog import app, db, bcrypt
-
 from flaskblog.forms import RegistrationForm, LoginForm,ContactForm, UpdateAccountForm, PostForm, LoginAdminForm
 from flaskblog.models import User, Post, Review,Graph,Contact, Admin
-
 from flask_login import login_user, current_user, logout_user, login_required
 from flaskblog.ebay import ebay_parse
 from flaskblog.twitter1 import twitter_parse
+from flaskblog.shopy import shopy_parse
 from textblob import TextBlob
 import pygal
 from pygal.style import DarkColorizedStyle
@@ -120,6 +119,12 @@ def new_post():
 
         if form.url.data == 'Twitter.com':
             reviews= twitter_parse(form.keywords.data,form.number_of_reviews.data)
+            analyse(reviews,post)
+
+
+
+        if form.url.data == 'Apps.shopify.com':
+            reviews= shopy_parse(form.keywords.data,form.number_of_reviews.data)
             analyse(reviews,post)
 
         flash('Your Request has been created!', 'success')

@@ -17,7 +17,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
-    posts = db.relationship('Post', backref='Client', lazy=True)
+    posts = db.relationship('Post', backref='Client', lazy=True, cascade="save-update, merge, delete")
 
     def __repr__(self):
         return f"{self.username}"
@@ -31,7 +31,7 @@ class Post(db.Model):
     url=db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     reviews = db.relationship('Review', backref='origin', lazy=True)
-    graphs= db.relationship('Graph', backref='gg', lazy=True)
+    graphs= db.relationship('Graph', backref='gg', lazy=True, cascade="save-update, merge, delete")
 
 
     def __repr__(self):

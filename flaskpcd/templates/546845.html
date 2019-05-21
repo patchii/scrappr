@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Scrappr.</title>
+<link rel="icon" href="images/favicon.png" type="image/png" sizes="16x16">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="iLand Multipurpose Landing Page Template">
+<meta name="keywords" content="iLand HTML Template, iLand Landing Page, Landing Page Template">
+<link href="{{url_for('static',filename='bootstrap.min.css')}}" rel="stylesheet" type="text/css" media="all" />
+<link href="https://fonts.googleapis.com/css?family=Open%20Sans:300,400,500,600,700" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="{{url_for('static',filename='animate.css')}}">
+<!-- Resource style -->
+<link rel="stylesheet" href="{{url_for('static',filename='owl.carousel.css')}}">
+<link rel="stylesheet" href="{{url_for('static',filename='owl.theme.css')}}">
+<link rel="stylesheet" href="{{url_for('static',filename='ionicons.min.css')}}">
+<!-- Resource style -->
+<link href="{{url_for('static',filename='style.css')}}" rel="stylesheet" type="text/css" media="all" />
+</head>
+<body>
+<div class="wrapper">
+  <div class="container">
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container"> 
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+          <a class="navbar-brand-page-scroll" href="#main"><img class="essai" src="{{url_for('static',filename='logo2.png')}}" width="85" height="85"  alt="iLand" /></a> </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li><a class="page-scroll" href="#main">Product</a></li>
+            <li><a class="page-scroll" href="#features">Features</a></li>
+            <li><a class="page-scroll" href="#review-section">Reviews</a></li>
+            <li><a class="page-scroll" href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- /.navbar-collapse --> 
+  </div>
+  <!-- /.container-fluid -->
+  
+  <div class="main app form" id="main"><!-- Main Section-->
+    <div class="hero-section">
+      <div class="container nopadding">
+        <div class="col-md-5"> <img class="img-responsive wow fadeInUp" data-wow-delay="0.1s" src="images/spider_content.png" alt="App" /> </div>
+        <div class="col-md-7">
+          <div class="hero-content">
+            <h1 class="wow fadeInUp" data-wow-delay="0.1s">A web scraping tool that is easy to use</h1>
+            <p class="wow fadeInUp" data-wow-delay="0.2s">After twenty years of digital innovation, web analytics is still at the heart of business decision-making. With the help of AI, machine learning and other advanced technologies, you go beyond visits, page views and bounce rates, and get insights into customer reviews.
+            Scrappr. is a free web scraping tool. With our advanced web scraper, extracting and analysing data about your product has never been easier. </p>
+            <div class="sub-form wow fadeInUp" data-wow-delay="0.3s">
+              <form class="subscribe-form wow zoomIn" action="php/subscribe.php" method="post" name="subscribeform" id="subscribeform">
+              <input class="mail" type="email" name="email" placeholder="Join the wait list" autocomplete="off" id="subemail">
+              <input class="submit-button" type="submit" value="Subscribe" name="send" id="subsubmit">
+            </form>
+              <!-- subscribe message -->
+        <div id="mesaj"></div>
+        <!-- subscribe message --> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Client Section -->
+    <div class="client-section">
+      <div class="container text-center">
+        <div class="clients owl-carousel owl-theme">
+          <div class="single"> <img src="images/client1.png" alt="Image" /> </div>
+          <div class="single"> <img src="images/client2.png" alt="Image" /> </div>
+          <div class="single"> <img src="images/client3.png" alt="Image" /> </div>
+          <div class="single"> <img src="images/client1.png" alt="Image" /> </div>
+          <div class="single"> <img src="images/client2.png" alt="Image" /> </div>
+          <div class="single"> <img src="images/client3.png" alt="Image" /> </div>
+        </div>
+      </div>
+    </div>
+    <div class="app-features text-center" id="features">
+      <div class="container">
+       <div class="split-content">
+        <h1 class="wow fadeInDown" data-wow-delay="0.1s">Features & Overviews</h1>
+        <p class="wow fadeInDown" data-wow-delay="0.2s"> It can be hard to keep track of all the features that Scrappr has to offer. To find out if Scrappr is the right web scrapping tool for you, check out this list of features.<br class="hidden-xs">
+           </p>
+            <ul class="wow fadeInUp">
+            <li>Offering the best results to you. However, Our web site relies on complicated algorithms to offer to you exacts staticts wich can be represented on a graph.</li>
+            <li>Scrappr can simulate scrolling down to the bottom of the page to load more data in some particular websites like Amazon. In this challange, most of web scrapers keep harvesting a huge duplicated information and quickly become plodding. However, don't worry about this nightmare because Scrappr has smart functions to avoid it. </li>
+            <li>Exporting scraped results to a destination without any always-running-background service to save your system resources. Moreover, all duplications can be removed from the harvested results to make sure only new data is kept.</li>
+          </ul>
+       </div>
+        <div class="col-md-4 features-left">
+          <div class="col-md-12 wow fadeInDown" data-wow-delay="0.2s">
+            <div class="icon"> <i class="ion-ios-list-outline"></i> </div>
+            <div class="feature-single" id="ur">
+              <h1>Choose a website</h1>
+              <p>  Choose a site to scrape data from from our large database of Forums and social networks. </p>
+            </div>
+          </div>
+          <div class="col-md-12 wow fadeInDown" data-wow-delay="0.4s">
+            <div class="icon"> <i class="ion-ios-chatboxes-outline"></i> </div>
+            <div class="feature-single">
+              <h1>Our Users Reviews</h1>
+              <p> Some of our users feedbacks about Scrappr performance. </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 wow fadeInDown" data-wow-delay="0.5s"> <img class="img-responsive" src="images/main.png" alt="App" id="imm" /> </div>
+        <div class="col-md-4 features-left">
+          <div class="col-md-12 wow fadeInDown" data-wow-delay="0.6s">
+            <div class="icon"> <i class="ion-ios-cloud-download-outline"></i> </div>
+            <div class="feature-single" id="Dload">
+              <h1>Download Results</h1>
+              <p> Access data via JSON, Excel and API. Data is collected by our servers</p>
+            </div>
+          </div>
+          <div class="col-md-12 wow fadeInDown" data-wow-delay="0.7s">
+            <div class="icon"> <i class="ion-ios-copy-outline"></i> </div>
+            <div class="feature-single">
+              <h1 id="supp">Add a comment</h1>
+              <p> We are intrested to know our users feedbacks about Scrappr. </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="split-features">
+      <div class="col-md-6 nopadding">
+        <div class="split-image"> <img class="img-responsive wow fadeIn" src="images/simple.jpg" alt="Image" /> </div>
+      </div>
+      <div class="col-md-6 nopadding">
+        <div class="split-content">
+          <h1 class="wow fadeInUp">Designed for simple use and  effective results</h1>
+          <p class="wow fadeInUp"> Scrappr is very easy to use. In fact you need to follow these simple steps:</p>
+          <ul class="wow fadeInUp">
+            <li><a class="page-scroll" href="#ur">Choose your URLs</a></li>
+            <li>Choose the keywords relative to your product.</li>
+            <li>Choose the number of reviews to grab and analyse (option for twitter).</li>
+            <li><a class="page-scroll" href="#Dload">Download your results if you want to.</a></li>
+            <li><a class="page-scroll" href="#supp">Add a comment to support us.</a></li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    
+     <div class="split-features2">
+      
+      <div class="col-md-6 nopadding">
+        <div class="split-content second">
+          <h1 class="wow fadeInUp">The best way to evaluate your product</h1>
+          <p class="wow fadeInUp">Our website allows you to have a general idea about the satisfaction of your customers concerning your products.
+          Scrappr provides you with accurate statistics illustrating the feedbacks grouped into three categories: negative, neutral and positive feedbacks that are represented as graphs.
+          So we can offer you the option of distinguishing the feedbacks from each category.</p>
+        </div>
+      </div>
+      <div class="col-md-6 nopadding">
+        <div class="split-image"> <img class="img-responsive wow fadeIn" src="images/stat.jpg" alt="Image" /> </div>
+      </div>
+    </div>
+    
+    
+    
+    <div class="pitch text-center">
+      <div class="container">
+        <div class="pitch-intro">
+          <h1 class="wow fadeInDown" data-wow-delay="0.2s">More Awesome Features</h1>
+          <p class="wow fadeInDown" data-wow-delay="0.2s">Random extracting delay to avoid blocking by remote hosts. Some website will block your IP address from access to protect its data if you send multiple requets at short time. </p>
+        </div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="feature-sub">
+      <div class="container">
+        <div class="sub-inner">
+          <h1 class="wow fadeInUp">Simple Reliable Understandable & FREE for you</h1>
+          <a href="#" class="btn btn-action wow fadeInUp">Subscribe now</a> </div>
+      </div>
+    </div>
+    <div id="review-section" class="review-section">
+      <div class="container">
+        <div class="col-md-10 col-md-offset-1">
+          <div class="reviews owl-carousel owl-theme">
+            <div class="review-single"><img class="img-circle" src="images/customer1.png" alt="Client Testimonoal" />
+              <div class="review-text wow fadeInUp" data-wow-delay="0.2s">
+                <p>Morbi eget dictum enim. Praesent sed quam sit amet lorem tempor rhoncus. <br>In hac habitasse platea dictumst. Vivamus in accumsan ex</p>
+                <h3>Johnathan Doe</h3>
+                <h3>Marketing Head Matrix media</h3>
+              </div>
+            </div>
+            <div class="review-single"><img class="img-circle" src="images/customer2.png" alt="Client Testimonoal" />
+              <div class="review-text">
+                <p>Morbi eget dictum enim. Praesent sed quam sit amet lorem tempor rhoncus. <br>In hac habitasse platea dictumst. Vivamus in accumsan ex</p>
+                <h3>Oidila Matik</h3>
+                <h3>President Lexo Inc</h3>
+              </div>
+            </div>
+            <div class="review-single"><img class="img-circle" src="images/customer3.png" alt="Client Testimonoal" />
+              <div class="review-text">
+                <p>Morbi eget dictum enim. Praesent sed quam sit amet lorem tempor rhoncus. <br>In hac habitasse platea dictumst. Vivamus in accumsan ex</p>
+                <h3>- Alex Dattilo</h3>
+                <h3>CEO Optima Inc</h3>
+              </div>
+            </div>
+            <div class="review-single"><img class="img-circle" src="images/customer4.png" alt="Client Testimonoal" />
+              <div class="review-text">
+                <p>Morbi eget dictum enim. Praesent sed quam sit amet lorem tempor rhoncus. <br>In hac habitasse platea dictumst. Vivamus in accumsan ex</p>
+                <h3>- Robert Hammer</h3>
+                <h3>design head Omega Corp</h3>
+              </div>
+            </div>
+            <div class="review-single"><img class="img-circle" src="images/customer5.png" alt="Client Testimonoal" />
+              <div class="review-text">
+                <p>Morbi eget dictum enim. Praesent sed quam sit amet lorem tempor rhoncus. <br>In hac habitasse platea dictumst. Vivamus in accumsan ex</p>
+                <h3>- Rita Valentine</h3>
+                <h3>CEO Behena digital</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="pricing" class="pricing-section text-center">
+      <div class="container">
+        <div class="col-md-12 col-sm-12 nopadding">
+          <div class="pricing-intro">
+            <h1 class="wow fadeInUp" data-wow-delay="0s">Easy Pricing Plans</h1>
+            <p class="wow fadeInUp" data-wow-delay="0.2s"> Lorem ipsum dolor sit. Incidunt laborum beatae earum nihil odio consequatur officiis <br class="hidden-xs">tempore consequuntur officia ducimus unde doloribus quod unt repell </p>
+          </div>
+          <div class="col-sm-4">
+            <div class="table-left wow fadeInUp" data-wow-delay="0.4s">
+              <div class="icon"> <i class="ion-ios-paperplane-outline"></i> </div>
+              <div class="pricing-details">
+                <h2>Starter Plan</h2>
+                <span>Free</span>
+                <ul>
+                  <li>Consectetur adipiscing</li>
+                  <li>Nunc luctus nulla et tellus</li>
+                  <li>Suspendisse quis metus</li>
+                  <li>Vestibul varius fermentum erat</li>
+                </ul>
+                <button class="btn btn-primary btn-action btn-fill">Get Plan</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="table-right table-center wow fadeInUp" data-wow-delay="0.6s">
+              <div class="icon"> <i class="ion-ios-analytics-outline"></i> </div>
+              <div class="pricing-details">
+                <h2>Popular Plan</h2>
+                <span>$3.99</span>
+              
+                <ul>
+                  <li>Consectetur adipiscing</li>
+                  <li>Nunc luctus nulla et tellus</li>
+                  <li>Suspendisse quis metus</li>
+                  <li>Vestibul varius fermentum erat</li>
+                </ul>
+                <button class="btn btn-primary btn-action btn-fill">Buy Now</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="table-right wow fadeInUp" data-wow-delay="0.6s">
+              <div class="icon"> <i class="ion-ios-color-wand-outline"></i> </div>
+              <div class="pricing-details">
+                <h2>Premium Plan</h2>
+                <span>$9.50</span>
+                <ul>
+                  <li>Consectetur adipiscing</li>
+                  <li>Nunc luctus nulla et tellus</li>
+                  <li>Suspendisse quis metus</li>
+                  <li>Vestibul varius fermentum erat</li>
+                </ul>
+                <button class="btn btn-primary btn-action btn-fill">Subcribe Now</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Subscribe Form -->
+    <div class="cta-sub no-color">
+      <div class="container">
+        <div class="cta-inner">
+          <h1 class="wow fadeInUp" data-wow-delay="0s">Sign Up to Our Scrappr and get the best results</h1>
+          <p class="wow fadeInUp" data-wow-delay="0.2s"> Enter your email address we promise, it's very safe.<br class="hidden-xs">
+            </p>
+          <div class="form wow fadeInUp" data-wow-delay="0.3s">
+            <form class="subscribe-form center-form wow zoomIn" action="php/subscribe.php" method="post" name="subscribeform" id="subscribeform">
+              <input class="mail" type="email" name="email" placeholder="Join the wait list" autocomplete="off" id="subemail">
+              <input class="submit-button" type="submit" value="Subscribe" name="send" id="subsubmit">
+            </form>
+              <!-- subscribe message -->
+        <div id="mesaj"></div>
+        <!-- subscribe message --> 
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer Section -->
+    <div class="footer">
+      <div class="container">
+        <div class="col-md-7"> <img src="images/logo2.png" width="80" height="30" alt="Image" />
+          <p> We garantie to our users the confidentiality and the security of our Website.  </p>
+        </div>
+        <div class="col-md-5" id="contact">
+            <h1>Contact Us</h1>
+            <p> Contact our 24/7 customer support if you have any <br class="hidden-xs">
+              questions. We'll help you out immediately. </p>
+            <a href="mailto:support@gmail.com"> contact@Scrappr.com</a> </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Scroll To Top --> 
+    
+    <a id="back-top" class="back-to-top page-scroll" href="#main"> <i class="ion-ios-arrow-thin-up"></i> </a> 
+    
+    <!-- Scroll To Top Ends--> 
+    
+  </div>
+  <!-- Main Section --> 
+</div>
+<!-- Wrapper--> 
+
+<!-- Jquery and Js Plugins --> 
+<script type="text/javascript" src="{{url_for('static',filename='owl.carousel.css')}}"></script> 
+<script type="text/javascript" src="{{url_for('static',filename='bootstrap.min.js')}}"></script>
+
+<script type="text/javascript" src="{{url_for('static',filename='plugins.js')}}"></script> 
+<script type="text/javascript" src="{{url_for('static',filename='menu.js')}}"></script> 
+<script type="text/javascript" src="{{url_for('static',filename='custom.js')}}"></script>
+<script src="{{url_for('static',filename='jquery.subscribe.js')}}"></script> 
+</body>
+</html>

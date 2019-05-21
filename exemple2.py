@@ -1,7 +1,7 @@
 import random
 import pickle as p
 from nltk.corpus import movie_reviews
-from textblob.classifiers import NaiveBayesClassifier
+from textblob.classifiers import DecisionTreeClassifier
 random.seed(1)
 
 train = [
@@ -26,14 +26,14 @@ test = [
 ]
 
 
-cl = NaiveBayesClassifier(train)
+cl = DecisionTreeClassifier(train)
 
 # Grab some movie review data
 reviews = [(list(movie_reviews.words(fileid)), category)
               for category in movie_reviews.categories()
               for fileid in movie_reviews.fileids(category)]
 random.shuffle(reviews)
-new_train, new_test = reviews[0:800], reviews[8001:1000]
+new_train, new_test = reviews[0:100], reviews[100:150]
 
 # Update the classifier with the new training data
 cl.update(new_train)
@@ -43,7 +43,7 @@ accuracy = cl.accuracy(test + new_test)
 print("Accuracy: {0}".format(accuracy))
 
 # Show 5 most informative features
-cl.show_informative_features(5)
+#cl.show_informative_features(5)
 
 
 #save_classifier = open("naivebayes.pickle","wb")

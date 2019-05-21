@@ -59,7 +59,7 @@ class UpdateAccountForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     keywords = TextAreaField('Keywords', validators=[DataRequired()])
-    url=SelectField('URL', choices=[('Ebay.com', 'Ebay.com'), ('Amazon.fr', 'Amazon.fr'), ('Twitter.com', 'Twitter.com')])
+    url=SelectField('URL', choices=[('Ebay.com', 'Ebay.com'), ('Amazon.fr', 'Amazon.fr'), ('Twitter.com', 'Twitter.com'), ('Apps.shopify.com', 'Apps.shopify.com')])
     number_of_reviews=SelectField('Maximum Number Of Reviews', choices=[ ('10', '10'),('50', '50'), ('100', '100'), ('200', '200'), ('500', '500'), ('1000', '1000')])
     submit = SubmitField('Post')
 

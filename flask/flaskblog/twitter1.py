@@ -3,7 +3,6 @@ import tweepy
 import unidecode
 import pandas as pd
 import matplotlib.pyplot as plt
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
 import seaborn as sns
 
 def twitter_parse(keywords,nb):
@@ -21,7 +20,7 @@ def twitter_parse(keywords,nb):
 	auth.set_access_token(accessToken, accessTokenSecret)
 	api = tweepy.API(auth)
 	noOfSearchTerms = int(nb)
-	tweets = tweepy.Cursor(api.search, q=mots_cle).items(noOfSearchTerms)
+	tweets = tweepy.Cursor(api.search, q=mots_cle, lang="en").items(noOfSearchTerms)
 	for tweet in tweets:
 	   # tweet_review = tweet.text
 		#translated_tweet = Translator().translate(text=tweet_review, dest='en').text
